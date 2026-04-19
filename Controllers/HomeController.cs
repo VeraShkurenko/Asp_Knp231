@@ -137,6 +137,36 @@ namespace AspKnP231.Controllers
         /* Д.З. Зробити сторінку з формою реєстрації нового користувача
          * Описати усі необхідні моделі
          */
+        public IActionResult DerivedKey(DerivedKeyFormModel model)
+        {
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult CalculateDerivedKey(DerivedKeyFormModel model, [FromServices] AspKnP231.Services.Kdf.IKdfService kdfService)
+        {
+            if (string.IsNullOrEmpty(model.Password))
+            {
+                ModelState.AddModelError("Password", "Пароль не може бути порожнім");
+            }
+
+            if (model.AutoSalt)
+            {
+                model.Salt = Guid.NewGuid().ToString().Substring(0, 8);
+            }
+            else if (string.IsNullOrEmpty(model.Salt))
+            {
+                ModelState.AddModelError("Salt", "Введіть сіль або оберіть автогенерацію");
+            }
+
+            if (ModelState.IsValid)
+            {
+                model.DerivedKey = kdfService.Dk(model.Salt!, model.Password!);
+            }
+
+            return View("DerivedKey", model);
+        }
+
         public IActionResult Razor()
         {
             return View();
