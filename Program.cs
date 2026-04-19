@@ -11,6 +11,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173") // Стандартний порт Vite
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials(); // Дозволяємо передачу сесійних Cookie
+        });
+});
+
 builder.Services.AddHash();
 builder.Services.AddKdf();
 builder.Services.AddScoped<ScopedService>();
@@ -41,7 +53,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
 app.UseRouting();
+
+app.UseCors("AllowFrontend");
+
 app.UseAuthorization();
 app.MapStaticAssets();
 app.UseSession();       // Включення сесій https://learn.microsoft.com/en-us/aspnet/core/fundamentals/app-state

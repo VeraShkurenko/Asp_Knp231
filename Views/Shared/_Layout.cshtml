@@ -46,10 +46,96 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Forms"><i class="bi bi-card-checklist header-icon"></i></a>
                         </li>
                     </ul>
+                    <ul class="navbar-nav">
+                        @if (Context.Session.GetString("auth-login") != null)
+                        {
+                            var avatar = Context.Session.GetString("auth-avatar");
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Privacy" title="Профіль">
+                                    @if (string.IsNullOrEmpty(avatar))
+                                    {
+                                        <i class="bi bi-person-circle fs-4"></i>
+                                    }
+                                    else
+                                    {
+                                        <img src="~/img/alert.png" style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid #0d6efd;" alt="Avatar" />
+                                    }
+                                    <span class="ms-1">@Context.Session.GetString("auth-userName")</span>
+                                </a>
+                            </li>
+                            <li class="nav-item ms-2">
+                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                </button>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                    <i class="bi bi-box-arrow-in-right"></i> Увійти
+                                </button>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>
     </header>
+
+    <!-- Logout Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Вихід</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    Ви виходите з системи. Підтверджуєте?
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <form asp-action="Logout" method="post">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ні</button>
+                        <button type="submit" class="btn btn-danger">Так</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Автентифікація</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="login-form">
+                        <div class="mb-3">
+                            <label for="login-input" class="form-label">Логін</label>
+                            <input type="text" class="form-control" id="login-input" name="user-login">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password-input" class="form-label">Пароль</label>
+                            <input type="password" class="form-control" id="password-input" name="user-password">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <div id="login-alert-container" style="flex-grow: 1; margin-right: 15px;">
+                        <!-- Alerts will appear here -->
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+                        <button type="button" class="btn btn-primary" id="login-button">Увійти</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

@@ -192,6 +192,31 @@ namespace AspKnP231.Controllers
             return View("DerivedKey", model);
         }
 
+        [HttpPost]
+        public JsonResult Auth([FromForm(Name ="user-login")] String login, [FromForm(Name = "user-password")] String password)
+        {
+            // Імітація перевірки в БД
+            if (login == "admin" && password == "admin123")
+            {
+                HttpContext.Session.SetString("auth-login", login);
+                HttpContext.Session.SetString("auth-userName", "Головний Адмін");
+                // Для тесту: "avatar.png" - є аватарка, "" - немає
+                HttpContext.Session.SetString("auth-avatar", "avatar.png"); 
+                
+                return Json(new { success = true });
+            }
+            return Json(new { success = false, message = "Невірний логін або пароль" });
+        }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("auth-login");
+            HttpContext.Session.Remove("auth-userName");
+            HttpContext.Session.Remove("auth-avatar");
+            return RedirectToAction(nameof(Index));
+        }
+
         public IActionResult Razor()
         {
             return View();
