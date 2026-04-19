@@ -3,6 +3,7 @@
 *@
 @inject AspKnP231.Services.Hash.IHashService hashService
 @inject AspKnP231.Services.Scoped.ScopedService scopedService
+@inject AspKnP231.Services.DateTime.IDateTimeService dateTimeService
 
 @{
     ViewData["Title"] = "IoC";
@@ -11,6 +12,14 @@
 <div class="text-center">
     <h1 class="display-4"><i class="bi bi-box-arrow-in-down-right display-5"></i> 
         Робота з залежностями: IoC, DI, DIP</h1>
+</div>
+
+<div class="card mt-3 mb-3">
+    <div class="card-body">
+        <h5 class="card-title">Демонстрація DateTimeService (Д.З.)</h5>
+        <p class="card-text">Дата: <strong>@dateTimeService.GetDate()</strong></p>
+        <p class="card-text">Час: <strong>@dateTimeService.GetTime()</strong></p>
+    </div>
 </div>
 
 <p>
@@ -85,12 +94,40 @@
         <tr><td>Transient</td><td></td><td></td><td></td></tr>
     </tbody>
 </table>
+<h2>Дослідження часу оброблення запиту (Д.З.)</h2>
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Точка обробки</th>
+            <th>Мітка часу (Ticks)</th>
+            <th>Різниця (мкс)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            long middlewareTimestamp = (long)(Context.Items["MiddlewareTimestamp"] ?? 0L);
+            long controllerTimestamp = (long)(ViewData["ControllerTimestamp"] ?? 0L);
+            long viewTimestamp = DateTime.Now.Ticks;
+        }
+        <tr>
+            <td>Middleware</td>
+            <td>@middlewareTimestamp</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>Controller</td>
+            <td>@controllerTimestamp</td>
+            <td>+@((controllerTimestamp - middlewareTimestamp) / 10.0) мкс</td>
+        </tr>
+        <tr>
+            <td>View</td>
+            <td>@viewTimestamp</td>
+            <td>+@((viewTimestamp - controllerTimestamp) / 10.0) мкс</td>
+        </tr>
+    </tbody>
+</table>
+
 @* Д.З. Реалізувати дослідження часу оброблення запиту:
     - створити Middleware, у якому внести до контексту мітку часу (Ticks)
-    - створити метод контролера (Action), у якому також внести до контексту 
-        мітку часу (під іншим іменем)
-    - у представленні (View) також запитати мітку часу.
-    вивести дані в одній таблиці, додати різницеві величини для кращого сприйняття
-       Middleware      Controller                 View
-    |348522936754982|348522936755982 (+1000мкс)| ...
+...
 *@

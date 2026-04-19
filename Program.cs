@@ -3,6 +3,7 @@ using AspKnP231.Middleware.Demo;
 using AspKnP231.Services.Scoped;
 using AspKnP231.Services.Kdf;
 using AspKnP231.Data;
+using AspKnP231.Services.DateTime;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,13 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Реєструємо співставлення інтерфейсу та класу-сервісу у контейнері
-// "якщо буде запит на інжекцію IHashService, то слід видати об'єкт Md5HashService"
-// builder.Services.AddSingleton<IHashService, Md5HashService>();
-builder.Services.AddHash();   // замінено на розширення (див. HashExtension)
+builder.Services.AddHash();
 builder.Services.AddKdf();
+builder.Services.AddScoped<ScopedService>();
 
-builder.Services.AddScoped<ScopedService>();    // без інтерфейсу - тільки один параметр типу
+// Реєструємо сервіс дати-часу (можна змінювати на SqlDateTimeService)
+builder.Services.AddSingleton<IDateTimeService, NationalDateTimeService>();
 
 builder.Services.AddDistributedMemoryCache();          // Налаштування сесій
 builder.Services.AddSession(options =>                 // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/app-state

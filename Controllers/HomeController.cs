@@ -89,7 +89,6 @@ namespace AspKnP231.Controllers
 
 
 
-        /*
         public IActionResult Middleware()
         {
             return View();
@@ -101,6 +100,7 @@ namespace AspKnP231.Controllers
             ViewData["hash"] = _hashService.Digest("123");
             ViewData["hashCode"] = _hashService.GetHashCode();
             ViewData["ControllerScopedHash"] = _scopedService.GetHashCode();
+            ViewData["ControllerTimestamp"] = DateTime.Now.Ticks;
             return View();
         }
 
@@ -122,7 +122,6 @@ namespace AspKnP231.Controllers
 
             return View(viewModel);
         }
-        */
         /* Д.З. Зробити сторінку з формою реєстрації нового користувача
          * Описати усі необхідні моделі
          */

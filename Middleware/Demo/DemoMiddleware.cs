@@ -28,6 +28,7 @@ namespace AspKnP231.Middleware.Demo
             // розширюємо перевірку об'єктів-сервісів: чи постійні вони у різних точках
             context.Items.Add("FromDemoMiddleware", hashService.GetHashCode());
             context.Items.Add("MiddlewareScopedHash", scopedService.GetHashCode());
+            context.Items.Add("MiddlewareTimestamp", DateTime.Now.Ticks);
 
             // Call the next delegate/middleware in the pipeline.
             await _next(context);
