@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Middleware";
+}
+
+<div class="text-center">
+    <h1 class="display-4">
+        <i class="bi bi-hdd-rack bi-rot-90 display-5"></i>
+        Робота з Middleware
+    </h1>
+</div>
+<p>
+    <strong>Middleware</strong> (у ряді технологій - фільтри) - спосіб організації 
+    життєвого циклу оброблення запитів за якого додаткові обробники можуть вміщуватись 
+    між вже наявними. 
+</p>
+<img src="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/index/_static/request-delegate-pipeline.png"/>
+<p>
+    Головна ідея полягає у тому, що кожен обробник викликає наступний з обробників, 
+    передаючи йому роботу (виклик <code>next()</code> на рисунку).
+    Після завершення роботи викликаного обробника даний обробник продовжує виконання. 
+    Через наявність великої кількості обробників виникає ланцюг викликів у якому 
+    простежується "прямий хід" - від запиту (Request) до останнього обробника, 
+    та "зворотній хід" - у протилежному напрямі з формуванням відповіді (Response).
+</p>
+<p>
+    Процедура зв'язування обробників (встановлення їх порядку), визначення за який обробник
+    відповідатиме кожен <code>next()</code> покладається на "рушій" ASP. Ряд обробників 
+    має бути на своєму місці для забезпечення коректної роботи фреймворка, причому, як на 
+    початку "ланцюга" (стат. файли, авторизація тощо), так і на кінці (Razor)
+</p>
+<img href="/img/middlewares-order.png" />
+<p>
+    Окрім передачі роботи на наступну ланку обробник може припинити роботу "ланцюга" 
+    не викликавши <code>next()</code>. Це може використовуватись для відмов в обслуговувані
+    запитів за певними ознаками. Middleware працює до розгалуження за контролерами, тому 
+    є змога вживати дії, спільні для всіх запитів, незалежно від їх адреси. 
+</p>
+<p>
+    Програмно обробники Middleware задаються у другій частині <code>Program.cs</code>
+    інструкціями <code>UseMiddleware&lt;MyClassOfMiddleware>()</code>
+    або традиційними розширеннями на кшталт <code>UseMyMiddleware()</code>. Класи 
+    Middleware мають відповідати встановленій структурі (див. дир. Middleware)
+</p>
+Хеш-код сервіса, переданого у Middleware: @Context.Items["FromDemoMiddleware"]
+
+<p class="text-muted">
+    <i>У матеріалах використано документацію 
+        <a href="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/">Middleware</a>    
+        <a href="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/write">Custom Middleware</a>
+    </i>
+</p>

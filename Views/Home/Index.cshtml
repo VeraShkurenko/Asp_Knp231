@@ -1,0 +1,65 @@
+@inject AspKnP231.Services.Kdf.IKdfService kdfService
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Програмування з ASP.NET Core та EF Core</h1>    
+</div>
+
+<h2 class="display-5">Зміст</h2>
+
+<ul class="list-group">
+
+    <li class="list-group-item">
+        <h3 class="display-6">
+            <a class="nav-link" asp-controller="Home" asp-action="Intro">
+                <i class="bi bi-play-circle display-6"></i> Вступ до ASP.NET Core MVC
+            </a>
+        </h3>
+    </li>
+
+    <li class="list-group-item">
+        <h3 class="display-6">
+            <a class="nav-link" asp-controller="Home" asp-action="Razor">
+                <i class="bi bi-at display-6"></i> Розмітковий синтаксис Razor
+            </a>
+        </h3>
+    </li>
+
+    <li class="list-group-item">
+        <h3 class="display-6">
+            <a class="nav-link" asp-controller="Home" asp-action="Models">
+                <i class="bi bi-grid display-6"></i> Моделі в ASP
+            </a>
+        </h3>
+    </li>
+
+    <li class="list-group-item">
+        <h3 class="display-6">
+            <a class="nav-link" asp-controller="Home" asp-action="IoC">
+                <i class="bi bi-box-arrow-in-down-right display-6"></i>
+                Робота з залежностями: IoC, DI, DIP
+            </a>
+        </h3>
+    </li>
+
+    <li class="list-group-item">
+        <h3 class="display-6">
+            <a class="nav-link" asp-controller="Home" asp-action="Middleware">
+                <i class="bi bi-hdd-rack bi-rot-90 display-6"></i>
+                Робота з Middleware
+            </a>
+        </h3>
+    </li>
+
+    <li class="list-group-item">
+        <h3 class="display-6">
+            <a class="nav-link" asp-controller="Home" asp-action="Forms">
+                <i class="bi bi-card-checklist display-6"></i>
+                Робота з формами
+            </a>
+        </h3>
+    </li>
+
+</ul>

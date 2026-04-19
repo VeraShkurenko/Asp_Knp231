@@ -1,0 +1,54 @@
+﻿@* Будь-яке представлення Razor має властивість Model, яка зв'язується з
+    переданою від контролера моделлю [ return View(viewModel); ]
+    Тип моделі зазначається інструкцією @model *@
+@model AspKnP231.Models.Home.HomeModelsViewModel
+
+@{
+    ViewData["Title"] = "Models";
+}
+
+<div class="text-center">
+    <h1 class="display-4"><i class="bi bi-grid display-5"></i> Моделі в ASP</h1>
+</div>
+
+<p>
+    У загальному розумінні моделі в ASP - це об'єкти для передачі даних (DTO). 
+    У концепції MVC (Model-View-Controller) Model - частина системи, що відповідає 
+    за постачання даних, зазвичай, з БД
+</p>
+<p>
+    За призначенням моделі можна поділити на
+</p>
+<ul>
+    <li>Моделі представлень (View Models) - дані, що необхідні для відображення представлень</li>
+    <li>Моделі даних (Entities) - об'єкти, що відповідають за передачу даних від джерела (БД)</li>
+    <li>Моделі форм (Form Models) - дані, що передаються від представлень до сервера, зазвичай,
+        через заповнення HTML-форм</li>
+</ul>
+<p>
+    Перетворення моделей між різними формами називається Mapping. Можна казати, що 
+    це головна задача Контролерів
+</p>
+<form method="post">
+    <div class="input-group mb-3 w-25">
+        <span class="input-group-text" id="user-login-addon"><i class="bi bi-key"></i></span>
+        <input type="text" class="form-control" name="user-login"
+               placeholder="Login" aria-label="Login" aria-describedby="user-login-addon"/>
+    </div>
+    <div class="input-group mb-3 w-25">
+        <span class="input-group-text" id="user-password-addon"><i class="bi bi-lock"></i></span>
+        <input type="text" class="form-control" name="user-password"
+               placeholder="Password" aria-label="Password" aria-describedby="user-password-addon"/>
+    </div>
+    <button type="submit" class="btn btn-success" name="user-button" value="Auth">Автентифікація</button>
+</form>
+@if(Model.FormModel == null)
+{
+    <i>Дані не передавались</i>
+}
+else
+{
+    <p>
+        Дані форми передані: @Model.FormModel.UserLogin, @Model.FormModel.UserPassword
+    </p>
+}
