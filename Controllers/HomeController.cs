@@ -66,25 +66,54 @@ namespace AspKnP231.Controllers
             {
                 ModelState.AddModelError("user-login", "Даний логін вже у вжитку");
             }
-            /* Реалізувати перевірку пароля на надійність:
-             * - довжина щонайменше 6 символів
-             * - містить принаймні одну цифру
-             * - містить принаймні одну маленьку літеру
-             * - містить принаймні одну велику літеру
-             * - містить принаймні один спецсимвол (не-літера, не-цифра)
-             */
+            
+            // Реалізація перевірки пароля на надійність (Д.З.)
+            if (string.IsNullOrEmpty(formModel.UserPassword) || formModel.UserPassword.Length < 6)
+            {
+                ModelState.AddModelError("user-password", "Пароль має бути щонайменше 6 символів");
+            }
+            else
+            {
+                bool hasDigit = formModel.UserPassword.Any(char.IsDigit);
+                bool hasLower = formModel.UserPassword.Any(char.IsLower);
+                bool hasUpper = formModel.UserPassword.Any(char.IsUpper);
+                bool hasSpecial = formModel.UserPassword.Any(c => !char.IsLetterOrDigit(c));
+
+                if (!hasDigit) ModelState.AddModelError("user-password", "Пароль має містити хоча б одну цифру");
+                if (!hasLower) ModelState.AddModelError("user-password", "Пароль має містити хоча б одну маленьку літеру");
+                if (!hasUpper) ModelState.AddModelError("user-password", "Пароль має містити хоча б одну велику літеру");
+                if (!hasSpecial) ModelState.AddModelError("user-password", "Пароль має містити хоча б одну спецсимвол");
+            }
+
+            // Валідація аватарки (Д.З.)
+            if (formModel.UserAvatar != null)
+            {
+                string[] allowedExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
+                string extension = Path.GetExtension(formModel.UserAvatar.FileName).ToLower();
+                if (!allowedExtensions.Contains(extension))
+                {
+                    ModelState.AddModelError("user-avatar", "Неприпустимий тип файлу. Дозволені: " + string.Join(", ", allowedExtensions));
+                }
+            }
 
             HttpContext.Session.SetString(
                 nameof(ModelState),
                 JsonSerializer.Serialize(ModelState)
             );
 
+            // Очищуємо поле файлу перед серіалізацією у сесію, бо файл не можна серіалізувати
+            var file = formModel.UserAvatar;
+            formModel.UserAvatar = null;
+
             HttpContext.Session.SetString(
                 nameof(HomeFormsFormModel),
                 JsonSerializer.Serialize(formModel)
             );
 
-            return RedirectToAction(nameof(Forms));   //  /Home/Forms - формує ASP
+            // Повертаємо файл назад, якщо він знадобиться далі в методі
+            formModel.UserAvatar = file;
+
+            return RedirectToAction(nameof(Forms));
         }
 
 
@@ -107,13 +136,11 @@ namespace AspKnP231.Controllers
         public IActionResult Models()
         {
             HomeModelsViewModel viewModel = new();
-            // Перевіряємо, чи є дані у сесії (після редиректу)
             if (HttpContext.Session.Keys.Contains(nameof(HomeModelsFormModel)))
             {
                 viewModel.FormModel = JsonSerializer.Deserialize<HomeModelsFormModel>(
                     HttpContext.Session.GetString(nameof(HomeModelsFormModel))!
                 );
-                // Одразу видаляємо з сесії, щоб при наступному F5 форма була порожньою
                 HttpContext.Session.Remove(nameof(HomeModelsFormModel));
             }
 
@@ -123,7 +150,6 @@ namespace AspKnP231.Controllers
         [HttpPost]
         public IActionResult ModelsReceiver(HomeModelsFormModel formModel)
         {
-            // Якщо натиснута кнопка - зберігаємо модель у сесії
             if (formModel.UserButton != null)
             {
                 HttpContext.Session.SetString(
@@ -131,7 +157,6 @@ namespace AspKnP231.Controllers
                     JsonSerializer.Serialize(formModel)
                 );
             }
-            // Перенаправляємо на GET-метод Models
             return RedirectToAction(nameof(Models));
         }
         /* Д.З. Зробити сторінку з формою реєстрації нового користувача

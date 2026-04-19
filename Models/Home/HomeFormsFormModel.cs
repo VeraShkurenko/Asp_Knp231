@@ -32,6 +32,9 @@ namespace AspKnP231.Models.Home
         [FromForm(Name = "user-repeat")]
         public String? UserRepeat { get; set; } = null!;
 
+        [FromForm(Name = "user-avatar")]
+        public IFormFile? UserAvatar { get; set; }
+
         [FromForm(Name = "user-button")]
         public String UserButton { get; set; } = null!;
     }

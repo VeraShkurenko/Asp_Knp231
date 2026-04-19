@@ -160,6 +160,30 @@
         </div>
     </div>    
     
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "user-avatar";
+                    isInvalid = Model.FormModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.FormModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.FormModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="user-avatar-addon"><i class="bi bi-image"></i></span>
+                <input type="file" class="form-control @validationClass" name="@fieldName"
+                       aria-label="Avatar" aria-describedby="user-avatar-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+        <div class="col">
+             @* Місце для майбутніх полів або порожня колонка для симетрії *@
+        </div>
+    </div>    
+    
     <button type="submit" class="btn btn-success" name="user-button" value="SignUp">Реєстрація</button>
 </form>
 @if(Model.FormModelState != null)
