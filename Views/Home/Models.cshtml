@@ -29,15 +29,17 @@
     Перетворення моделей між різними формами називається Mapping. Можна казати, що 
     це головна задача Контролерів
 </p>
-<form method="post">
+<form asp-action="ModelsReceiver" method="post">
     <div class="input-group mb-3 w-25">
         <span class="input-group-text" id="user-login-addon"><i class="bi bi-key"></i></span>
         <input type="text" class="form-control" name="user-login"
+               value="@Model.FormModel?.UserLogin"
                placeholder="Login" aria-label="Login" aria-describedby="user-login-addon"/>
     </div>
     <div class="input-group mb-3 w-25">
         <span class="input-group-text" id="user-password-addon"><i class="bi bi-lock"></i></span>
         <input type="text" class="form-control" name="user-password"
+               value="@Model.FormModel?.UserPassword"
                placeholder="Password" aria-label="Password" aria-describedby="user-password-addon"/>
     </div>
     <button type="submit" class="btn btn-success" name="user-button" value="Auth">Автентифікація</button>

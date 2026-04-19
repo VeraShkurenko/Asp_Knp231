@@ -104,23 +104,35 @@ namespace AspKnP231.Controllers
             return View();
         }
 
-        // Зв'язування моделі відбувається коли ми її зазначаємо вхідними параметром Action
-        // В старих ASP, якщо модель не є обов'язковою, то необхідно
-        // зазначати Nullable (HomeModelsFormModel?)
-        public IActionResult Models(HomeModelsFormModel formModel)
+        public IActionResult Models()
         {
-            // Особливість нових ASP - модель форми, як об'єкт, створюється
-            // у будь-якому випадку, навіть якщо немає даних від форми
-            // З метою розрізнення випадків наявності/відсутності даних вводиться
-            // елемент форми, що відповідає за кнопку надсилання форми.
-
             HomeModelsViewModel viewModel = new();
-            if(formModel.UserButton != null)
+            // Перевіряємо, чи є дані у сесії (після редиректу)
+            if (HttpContext.Session.Keys.Contains(nameof(HomeModelsFormModel)))
             {
-                viewModel.FormModel = formModel;
+                viewModel.FormModel = JsonSerializer.Deserialize<HomeModelsFormModel>(
+                    HttpContext.Session.GetString(nameof(HomeModelsFormModel))!
+                );
+                // Одразу видаляємо з сесії, щоб при наступному F5 форма була порожньою
+                HttpContext.Session.Remove(nameof(HomeModelsFormModel));
             }
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult ModelsReceiver(HomeModelsFormModel formModel)
+        {
+            // Якщо натиснута кнопка - зберігаємо модель у сесії
+            if (formModel.UserButton != null)
+            {
+                HttpContext.Session.SetString(
+                    nameof(HomeModelsFormModel),
+                    JsonSerializer.Serialize(formModel)
+                );
+            }
+            // Перенаправляємо на GET-метод Models
+            return RedirectToAction(nameof(Models));
         }
         /* Д.З. Зробити сторінку з формою реєстрації нового користувача
          * Описати усі необхідні моделі
