@@ -1,0 +1,103 @@
+﻿@model AspKnP231.Models.Shop.Admin.AdminDiscountViewModel
+@{
+    ViewData["Title"] = "Admin";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Адміністрування крамниці: акції та знижки</h1>
+</div>
+
+<div class="row">
+    <div class="col">
+
+        <form class="border m-3 p-3" id="discount-form">
+            <div class="mb-3">
+                <label class="form-label">Назва акції</label>
+                <input class="form-control" name="discount-title" />
+                <div class="invalid-feedback" data-valmsg-for="Title"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Опис</label>
+                <textarea class="form-control" name="discount-description"></textarea>
+                <div class="invalid-feedback" data-valmsg-for="Description"></div>
+            </div>
+
+            <div class="row">
+                <div class="col mb-3">
+                    <label class="form-label">Процент</label>
+                    <input class="form-control" type="number" step="0.01" name="discount-percent" />
+                    <div class="invalid-feedback" data-valmsg-for="Percent"></div>
+                </div>
+                <div class="col mb-3">
+                    <label class="form-label">Акційна ціна</label>
+                    <input class="form-control" type="number" step="0.01" name="discount-price" />
+                    <div class="invalid-feedback" data-valmsg-for="Price"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col mb-3">
+                    <label class="form-label">Початок</label>
+                    <input class="form-control" type="datetime-local" name="discount-start" />
+                    <div class="invalid-feedback" data-valmsg-for="Start"></div>
+                </div>
+                <div class="col mb-3">
+                    <label class="form-label">Завершення</label>
+                    <input class="form-control" type="datetime-local" name="discount-finish" />
+                    <div class="invalid-feedback" data-valmsg-for="Finish"></div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" type="button" id="admin-discount-btn">Додати</button>
+        </form>
+
+        @foreach (var discount in Model.Discounts)
+        {
+            @Html.DisplayFor(m => discount, "DiscountTemplate")
+        }
+    </div>
+
+    <div class="col">
+        <form class="border m-3 p-3" id="discount-detail-form">
+            <div class="mb-3">
+                <label class="form-label">Акція</label>
+                <select class="form-select" name="discount-detail-discount-id">
+                    <option value="">Оберіть акцію</option>
+                    @foreach (var discount in Model.Discounts)
+                    {
+                        <option value="@discount.Id" title="@discount.Description">@discount.Title</option>
+                    }
+                </select>
+                <div class="invalid-feedback" data-valmsg-for="DiscountId"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Товар</label>
+                <select class="form-select" name="discount-detail-product-id">
+                    <option value="">Оберіть товар</option>
+                    @foreach (var product in Model.Products)
+                    {
+                        <option value="@product.Id" title="@product.Description">@product.Title</option>
+                    }
+                </select>
+                <div class="invalid-feedback" data-valmsg-for="ProductId"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Встановити ціну</label>
+                <input class="form-control" type="number" step="0.01" name="discount-detail-price" />
+                <div class="invalid-feedback" data-valmsg-for="Price"></div>
+            </div>
+
+            <button type="button" class="btn btn-primary" id="discount-detail-btn">Додати</button>
+        </form>
+
+        @foreach (var dtl in Model.DiscountDetails)
+        {
+            @Html.DisplayFor(m => dtl)
+        }
+    </div>
+</div>
+
+<script src="~/js/admin.js"></script>

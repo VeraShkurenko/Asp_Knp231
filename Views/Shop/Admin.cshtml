@@ -1,0 +1,245 @@
+﻿@model AspKnP231.Models.Shop.Admin.ShopAdminViewModel
+@{
+    ViewData["Title"] = "Admin";
+    bool isInvalid;
+    String validationClass, errorMessages, fieldName;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Адміністрування крамниці</h1>
+</div>
+
+<form asp-action="SectionFormReceiver" method="post" enctype="multipart/form-data" class="border p-3">
+    <h2 class="display-6">Нова товарна група</h2>
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "Title";
+                    isInvalid = Model.ShopSectionModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.ShopSectionModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.ShopSectionModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="user-name-addon"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.ShopSectionFormModel?.Title"
+                       placeholder="@fieldName" aria-label="@fieldName" aria-describedby="user-name-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "Description";
+                    isInvalid = Model.ShopSectionModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.ShopSectionModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.ShopSectionModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="user-email-addon"><i class="bi bi-envelope-at"></i></span>
+                <input type="text" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.ShopSectionFormModel?.Description"
+                       placeholder="@fieldName" aria-label="@fieldName" aria-describedby="user-email-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "Slug";
+                    isInvalid = Model.ShopSectionModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.ShopSectionModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.ShopSectionModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="user-name-addon"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.ShopSectionFormModel?.Slug"
+                       placeholder="@fieldName" aria-label="@fieldName" aria-describedby="user-name-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group mb-3">
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="user-avatar"><i class="bi bi-person-circle"></i></label>
+                <input type="file" class="form-control" id="user-avatar" name="ImageFile" />
+            </div>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-success" name="Button" value="ShopSection">Додати</button>
+        </div>
+    </div>
+
+</form>
+
+<br/><br/>
+
+<form asp-action="ProductFormReceiver" method="post" enctype="multipart/form-data" class="border p-3">
+    <h2 class="display-6">Новий товар</h2>
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "Title";
+                    isInvalid = Model.ShopProductModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.ShopProductModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.ShopProductModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="product-name-addon"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.ShopProductFormModel?.Title"
+                       placeholder="@fieldName" aria-label="@fieldName" aria-describedby="product-name-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "Description";
+                    isInvalid = Model.ShopProductModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.ShopProductModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.ShopProductModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="product-email-addon"><i class="bi bi-envelope-at"></i></span>
+                <input type="text" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.ShopProductFormModel?.Description"
+                       placeholder="@fieldName" aria-label="@fieldName" aria-describedby="product-email-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "Slug";
+                    isInvalid = Model.ShopProductModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.ShopProductModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.ShopProductModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="product-name-addon"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.ShopProductFormModel?.Slug"
+                       placeholder="@fieldName" aria-label="@fieldName" aria-describedby="product-name-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "SectionId";
+                    isInvalid = Model.ShopProductModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.ShopProductModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.ShopProductModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <label class="input-group-text" for="inputGroupSelect01"><i class="bi bi-list-task"></i></label>
+                <select class="form-select @validationClass" id="inputGroupSelect01" name="@fieldName"
+                        value="@Model.ShopProductFormModel?.SectionId">
+                    <option selected>Choose...</option>
+                        @foreach(var sec in Model.ShopSections)
+                        {
+                            <option value="@sec.Id">@sec.Title</option>
+                        }
+                </select>
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "Price";
+                    isInvalid = Model.ShopProductModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.ShopProductModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.ShopProductModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="product-name-addon"><i class="bi bi-person"></i></span>
+                <input type="number" min="0.01" step="0.01" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.ShopProductFormModel?.Price"
+                       placeholder="@fieldName" aria-label="@fieldName" aria-describedby="product-name-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "Stock";
+                    isInvalid = Model.ShopProductModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.ShopProductModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.ShopProductModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="product-name-addon"><i class="bi bi-person"></i></span>
+                <input type="number" min="0" step="1" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.ShopProductFormModel?.Stock"
+                       placeholder="@fieldName" aria-label="@fieldName" aria-describedby="product-name-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="product-avatar"><i class="bi bi-person-circle"></i></label>
+                <input type="file" class="form-control" id="product-avatar" name="ImageFile" />
+            </div>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-success" name="Button" value="ShopSection">Додати</button>
+        </div>
+    </div>
+
+</form>
+
+
+
+

@@ -1,0 +1,158 @@
+﻿@model AspKnP231.Models.User.UserSignupViewModel
+
+@{
+    ViewData["Title"] = "SignUp";
+    bool isInvalid;
+    String validationClass, errorMessages, fieldName;
+}
+
+<div class="text-center">
+    <h1 class="display-4">
+        <i class="bi bi-person-add display-5"></i>
+        Реєстрація нового користувача
+    </h1>
+</div>
+@if (Model.IsSignupSuccessfull)
+{
+    <h2>Вітаємо з успішною реєстрацією, @Model.FormModel!.UserName</h2>
+}
+<form asp-action="SignUpForm" method="post" enctype="multipart/form-data" class="border p-3">
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "user-name";
+                    isInvalid = Model.FormModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.FormModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.FormModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="user-name-addon"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.FormModel?.UserName"
+                       placeholder="Name" aria-label="Name" aria-describedby="user-name-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "user-email";
+                    isInvalid = Model.FormModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.FormModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.FormModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="user-email-addon"><i class="bi bi-envelope-at"></i></span>
+                <input type="email" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.FormModel?.UserEmail"
+                       placeholder="E-mail" aria-label="E-mail" aria-describedby="user-email-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "user-login";
+                    isInvalid = Model.FormModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.FormModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.FormModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="user-login-addon"><i class="bi bi-key"></i></span>
+                <input type="text" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.FormModel?.UserLogin"
+                       placeholder="Login" aria-label="Login" aria-describedby="user-login-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "user-birthdate";
+                    isInvalid = Model.FormModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.FormModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.FormModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="user-birthdate-addon"><i class="bi bi-cake"></i></span>
+                <input type="date" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.FormModel?.UserBirthdate?.ToString("yyyy-MM-dd")"
+                       placeholder="Birthdate" aria-label="Password" aria-describedby="user-birthdate-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "user-password";
+                    isInvalid = Model.FormModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.FormModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.FormModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="user-password-addon"><i class="bi bi-lock"></i></span>
+                <input type="password" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.FormModel?.UserPassword"
+                       placeholder="Password" aria-label="Password" aria-describedby="user-password-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "user-repeat";
+                    isInvalid = Model.FormModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.FormModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.FormModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="user-repeat-addon"><i class="bi bi-unlock"></i></span>
+                <input type="password" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.FormModel?.UserRepeat"
+                       placeholder="Repeat" aria-label="Login" aria-describedby="user-repeat-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="user-avatar"><i class="bi bi-person-circle"></i></label>
+                <input type="file" class="form-control" id="user-avatar" name="user-avatar" />
+            </div>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-success" name="user-button" value="SignUp">Реєстрація</button>
+        </div>
+    </div>
+
+    
+</form>
+
+<img src="/Storage/Item/6334dfc3-5b72-4a40-b2cc-a9ab893b9492.png" />

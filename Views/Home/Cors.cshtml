@@ -1,0 +1,103 @@
+﻿@{
+    ViewData["Title"] = "CORS";
+}
+
+<div class="text-center">
+    <h1 class="display-4">
+        <i class="bi bi-arrow-left-right display-5"></i>
+        Обмін ресурсами. CORS/CORP.
+    </h1>
+</div>
+
+<p>
+    CORS - Cross Origin Resource Sharing / CORP - Cross Origin Resource [Sharing] Policy - 
+    правила, обмеження, які накладаються на взаємодію ресурсів, розміщених на 
+    різних джерелах.
+</p>
+<p>
+    Різними вважаються джерела, які відрізняються принаймні одним з:
+</p>
+<ul>
+    <li>
+        доменні імена - <code>shop.com</code> -- <code>shop.ua</code>
+    </li>
+    <li>
+        схема (протокол) - <code>http://shop.com</code> -- <code>https://shop.com</code> 
+        (http -- https)
+    </li>
+    <li>
+        порти <code>http://localhost:7012</code> -- <code>http://localhost:3001</code>
+    </li>
+</ul>
+<p>
+    Самі обмеження забороняють використання розширених засобів HTTP за певними 
+    винятками: дозволяється лише метод GET з обмеженим набором заголовків. 
+    Якщо запит не відповідає обмеженням, то браузер зупиняє його надсилання та 
+    формує preflight-запит, до якого включаються переліки обмежень, знайдені у 
+    початковому запиті, та надсилається методом OPTIONS. Якщо у відповіді на 
+    preflight-запит не буде якихось погоджень, то початковий запит скасовується 
+    з помилкою CORS
+</p>
+
+<h2 class ="display-6">Джерело (Origin)</h2>
+<p>
+    Перша перевірка здійснюється за наявністю заголовка <code>Access-Control-Allow-Origin</code>
+    у відповіді сервера, навіть якщо запит не був заблокований через обмеження.
+    У даних, що передаються цим заголовком, має бути джерело даного сайту 
+    або загальний дозвіл - "*".
+    За відсутності заголовку видається помилка<br />
+    <code>
+        Access to fetch at '...' from origin '...' has been blocked by CORS policy: <br />
+        No 'Access-Control-Allow-Origin' header is present on the requested resource.
+    </code><br />
+    У разі наявності заголовку, але невідповідності його вмісту до даного джерела
+    видається помилка <br />
+    <code>
+        Access to fetch at '...' from origin '...' has been blocked by CORS policy: <br />
+        The 'Access-Control-Allow-Origin' header has a value '...' 
+        that is not equal to the supplied origin. 
+        Have the server send the header with a valid value.
+    </code><br />
+</p>
+
+<h2 class="display-6">Заголовки</h2>
+<p>
+    Політика CORS дозволяє дуже обмежений перелік заголовків, зокрема, до 
+    заборонених належать <code>Authorization</code> та <code>Content-Type</code>.
+    Наявність заголовків у fetch-запитах блокує запит та формує preflight-запит
+    із переліком власних заголовків 
+    
+</p>
+<pre>
+Access-Control-Request-Headers: authorization
+Access-Control-Request-Method: GET
+Origin: http://localhost:5173
+</pre>
+<p>
+    Якщо у відповіді сервера немає підтвердження по заголовках, то запит блокується з 
+    помилкою <br/>
+    <code>
+        Access to fetch at '...' from origin '...' has been blocked by CORS policy: <br />
+        Request header field <b>authorization</b> is not allowed by 
+        Access-Control-Allow<b>-Headers</b> in preflight response.
+    </code>
+</p>
+<p>
+    В ASP дозвіл можна дати як на окремий перелік заголовків, так і на групи. 
+    А також повний дозвіл заголовків. ! Але не змішаний варіант
+</p>
+
+<h2 class="display-6">Методи</h2>
+<p>
+    Політика CORS дозволяє метод GET, поява інших методів також вимагає 
+    підтвердження з боку іншого джерела. Помилка за його відсутності:<br/>
+    <code>
+        Access to fetch at '...' from origin '...' has been blocked by CORS policy: <br />
+        Method <b>PUT</b> is not allowed by Access-Control-Allow<b>-Methods</b> in preflight response.
+    </code><br/>
+    Дозвіл методів може бути через кому. 
+    Зазвичай, для погодження усіх методів слід перести дані з заголовку-preflight
+    <code>Access-Control-Request-Method</code> до заголовку-відповіді 
+    <code>Access-Control-Allow-Methods</code>
+</p>
+    

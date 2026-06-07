@@ -1,0 +1,59 @@
+﻿@model AspKnP231.Models.Shop.ShopProductViewModal
+
+<div class="row">
+    <div class="col col-2 border-end">
+        @foreach (var shopSection in Model.ShopSections)
+        {
+            <a href="/Shop/Section/@shopSection.Slug" class="d-block mb-2">
+                @shopSection.Title
+            </a>
+        }
+    </div>
+
+
+    <div class="col col-10">
+       
+
+        @if (Model.ShopProduct != null)
+        {
+            <div class="row mt-3">
+                
+                @* Left Side: Product Image *@
+                <div class="col-md-5">
+                    @* Changed card-img-top to img-fluid for better sizing on a full page *@
+                    <img src="/Storage/Item/@(Model.ShopProduct.ImageUrl)" class="img-fluid rounded shadow-sm" alt="@Model.ShopProduct.Title">
+                </div>
+
+                @* Right Side: Product Details *@
+                <div class="col-md-7">
+                    <div class="ps-3">
+                        <h1 class="display-5">@Model.ShopProduct.Title</h1>
+                        <hr />
+                        <p class="fs-5 text-muted">@Model.ShopProduct.Description</p>
+                        
+                        @* This mimics your 'card-footer' style but makes it a big "Buy" section *@
+                        <div class="d-flex justify-content-between align-items-center bg-light p-4 rounded mt-4">
+                            <h2 class="mb-0"><b>₴ @Model.ShopProduct.Price</b></h2>
+                            <button class="btn btn-outline-success btn-lg">
+                                <i class="bi bi-cart2"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                @if (Model.PromoProduct.Length > 0)
+{
+    <hr class="my-5" />
+
+    <h2>Промо-товари</h2>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
+        @foreach (var product in Model.PromoProduct)
+        {
+            @Html.DisplayFor(m => product)
+        }
+    </div>
+}
+            </div>
+        }
+    </div>
+</div>

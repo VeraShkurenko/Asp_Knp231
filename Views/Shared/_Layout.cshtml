@@ -1,0 +1,161 @@
+﻿@using AspKnP231.Data.Entities
+@using System.Security.Claims
+@{
+    // Перевіряємо наявність авторизації
+    bool isAuthorized =
+        Context.User.Identity?.IsAuthenticated ?? false;
+    String? userAvatar = isAuthorized 
+        ? Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Thumbprint)?.Value
+        : null;
+    String? userName = isAuthorized
+        ? Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value
+        : null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AspKnP231</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/AspKnP231.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AspKnP231</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-house header-icon"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy"><i class="bi bi-shield-check header-icon"></i></a>
+                        </li>
+                        <li class="nav-item" title="Вступ до ASP.NET Core MVC">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Intro"><i class="bi bi-play-circle header-icon"></i></a>
+                        </li>
+                        <li class="nav-item" title="Розмітковий синтаксис Razor">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Razor"><i class="bi bi-at header-icon-big"></i></a>
+                        </li>
+                        <li class="nav-item" title="Моделі в ASP">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Models"><i class="bi bi-grid header-icon"></i></a>
+                        </li>
+                        <li class="nav-item" title="Робота з залежностями: IoC, DI, DIP">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="IoC"><i class="bi bi-box-arrow-in-down-right header-icon"></i></a>
+                        </li>
+                        <li class="nav-item" title="Робота з Middleware">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Middleware"><i class="bi bi-hdd-rack bi-rot-90 header-icon"></i></a>
+                        </li>
+                        <li class="nav-item" title="Робота з формами">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Forms"><i class="bi bi-card-checklist header-icon"></i></a>
+                        </li>
+                        <li class="nav-item" title="Обмін ресурсами. CORS/CORP.">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Cors"><i class="bi bi-arrow-left-right header-icon"></i></a>
+                        </li>
+                        <li class="nav-item" title="Крамниця">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Shop" asp-action="Index"><i class="bi bi-bag-check header-icon"></i></a>
+                        </li>
+                        <li class="nav-item" title="Автентифікація та авторизація.">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index"><i class="bi bi-box-arrow-in-right header-icon"></i></a>
+                        </li>
+                    </ul>
+
+                    @if (isAuthorized)
+                    {
+                        <div>
+                            <a asp-controller="User" asp-action="Profile"
+                               title="Кабінет користувача"
+                               class="btn btn-outline-secondary">
+                                @if (String.IsNullOrEmpty(userAvatar))
+                                {
+                                     <span>@(((userName ?? "").Length > 0) ? userName![0] : 'P')</span>
+                                }
+                                else
+                                {
+                                    <img src="/Storage/Item/@userAvatar" alt="Ava" style="max-width: 30px; max-height: 30px" />
+                                }
+                            </a>
+
+                            <a href="?logout"
+                               title="Вихід з авторизованого режиму"
+                               class="btn btn-outline-secondary"><i class="bi bi-box-arrow-right"></i></a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-outline-success me-2"
+                                    data-bs-toggle="modal" data-bs-target="#authModal">
+                                <i class="bi bi-box-arrow-in-right"></i>
+                            </button>
+
+                            <a asp-controller="User" asp-action="SignUp"
+                               title="Реєстрація нового користувача"
+                               class="btn btn-outline-secondary"><i class="bi bi-person-add"></i></a>
+                        </div>
+                    }                        
+
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2026 - AspKnP231 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    
+
+    <!-- Auth Modal -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="authModalLabel">Автентифікація</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" id="auth-form">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="user-login-addon"><i class="bi bi-key"></i></span>
+                            <input type="text" class="form-control" name="user-login"
+                                   placeholder="Login" aria-label="Login" aria-describedby="user-login-addon" />
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="user-password-addon"><i class="bi bi-lock"></i></span>
+                            <input type="password" class="form-control" name="user-password"
+                                   placeholder="Password" aria-label="Password" aria-describedby="user-password-addon" />
+                        </div>                       
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+                    <button form="auth-form" type="submit" class="btn btn-primary">Вхід</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

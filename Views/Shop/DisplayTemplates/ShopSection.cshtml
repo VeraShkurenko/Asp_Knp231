@@ -1,0 +1,13 @@
+﻿@model AspKnP231.Data.Entities.ShopSection
+
+<div class="col">
+    <a class="nav-link h-100" href = "/Shop/Section/@(Model.Slug)">
+        <div class="card h-100">
+        <img src="/Storage/Item/@(Model.ImageUrl)" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Title</h5>
+            <p class="card-text">@Model.Description</p>
+        </div>
+    </div>
+    </a>
+</div>

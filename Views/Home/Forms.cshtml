@@ -1,0 +1,248 @@
+﻿@model AspKnP231.Models.Home.HomeFormsViewModel
+
+@{
+    ViewData["Title"] = "Forms";
+    bool isInvalid;
+    String validationClass, errorMessages, fieldName;
+}
+
+<div class="text-center">
+    <h1 class="display-4">
+        <i class="bi bi-card-checklist display-5"></i>
+        Робота з формами.
+    </h1>
+</div>
+
+<h2>HTML-Форми</h2>
+<p>
+    HTML-Форми - інструментарій браузерів для надсилання даних до сервера. 
+    Параметри форми задають:  
+</p>
+<ul>
+    <li>
+        адресу, куди надсилаються дані (action), 
+        або asp-тег-хелпери (asp-controller, asp-action, ...). Якщо
+        ці параметри не зазначаються або лишаються порожніми, то дані форми
+        передаються на поточу адресу;
+    </li>
+    <li>
+        метод, яким надсилаються дані: get або post. Методом get дані включаються 
+        до URL, post - до тіла пакета;
+    </li>
+    <li>
+        кодування даних форми: <code>application/x-www-form-urlencoded</code> (за 
+        замовчанням) - спосіб кодування для підстановки в URL, 
+        <code>multipart/form-data</code> - для розділення даних по різних частинах 
+        пакету - підходить для передачі файлів.
+    </li>
+</ul>
+<form asp-action="FormReceiver" method="post" enctype="multipart/form-data" class="border p-3">
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "user-name";
+                    isInvalid = Model.FormModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.FormModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.FormModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="user-name-addon"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.FormModel?.UserName"
+                       placeholder="Name" aria-label="Name" aria-describedby="user-name-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "user-email";
+                    isInvalid = Model.FormModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.FormModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.FormModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="user-email-addon"><i class="bi bi-envelope-at"></i></span>
+                <input type="email" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.FormModel?.UserEmail"
+                       placeholder="E-mail" aria-label="E-mail" aria-describedby="user-email-addon" />                
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "user-login";
+                    isInvalid = Model.FormModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.FormModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.FormModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="user-login-addon"><i class="bi bi-key"></i></span>
+                <input type="text" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.FormModel?.UserLogin"
+                       placeholder="Login" aria-label="Login" aria-describedby="user-login-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "user-birthdate";
+                    isInvalid = Model.FormModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.FormModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.FormModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="user-birthdate-addon"><i class="bi bi-cake"></i></span>
+                <input type="date" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.FormModel?.UserBirthdate?.ToString("yyyy-MM-dd")"
+                       placeholder="Birthdate" aria-label="Password" aria-describedby="user-birthdate-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "user-password";
+                    isInvalid = Model.FormModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.FormModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.FormModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="user-password-addon"><i class="bi bi-lock"></i></span>
+                <input type="password" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.FormModel?.UserPassword"
+                       placeholder="Password" aria-label="Password" aria-describedby="user-password-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = "user-repeat";
+                    isInvalid = Model.FormModelState?.Keys.Contains(fieldName) ?? false;
+                    validationClass = Model.FormModelState == null ? "" : isInvalid ? "is-invalid" : "is-valid";
+                    errorMessages = isInvalid
+                    ? String.Join(", ", Model.FormModelState![fieldName]!.Errors.Select(e => e.ErrorMessage))
+                    : "";
+                }
+                <span class="input-group-text" id="user-repeat-addon"><i class="bi bi-unlock"></i></span>
+                <input type="password" class="form-control @validationClass" name="@fieldName"
+                       value="@Model.FormModel?.UserRepeat"
+                       placeholder="Repeat" aria-label="Login" aria-describedby="user-repeat-addon" />
+                <div class="invalid-feedback">
+                    @errorMessages
+                </div>
+            </div>
+        </div>
+    </div>    
+    
+    <button type="submit" class="btn btn-success" name="user-button" value="SignUp">Реєстрація</button>
+</form>
+@if(Model.FormModelState != null)
+{
+    foreach(var item in Model.FormModelState)
+    {
+        <p>
+            @item.Key -- @String.Join(", ", item.Value.Errors.Select(e => e.ErrorMessage))
+        </p>
+    }
+    <p>
+        Передано дані @Html.DisplayFor(m => Model.FormModel)
+    </p>
+}
+
+<h2>Моделі</h2>
+<p>
+    Для прийому даних від форми створюється модель (модель форми). Розрізнення випадків 
+    коли форма порожня та випадків, коли взагалі немає надсилання, здійснюється шляхом 
+    включення до моделі форми відомості про кнопку надсилання. Аналогічно на самій формі 
+    на кнопці має бути зазначені ім'я та значення.
+</p>
+<p>
+    Для передачі даних до представлення слід створити модель, до якої включити модель 
+    форми для можливості відновлення попередньо заповнених даних
+
+</p>
+
+<h2>Проблема</h2>
+<p>
+    Передача даних форми здійснюється у HTTP-пакеті, що, формально, є одним запитом. 
+    Спроба оновлення сторінки, на яку надіслані дані, означає необхідність повторення 
+    запиту, у відповідь на який побудована дана сторінка, тобто повторну передачу форми. 
+    Якщо форма передана методом GET, то одразу відбувається оновлення сторінки, якщо POST, 
+    то видається попереднє повідомлення (див. рис.), оскільки повтор може бути пов'язаний 
+    з повторним надсиланням великих даних, у т.ч. файлів. <i>Повідомлення не видається
+        якщо відкрито інструменти розробника (консоль), одразу повторюється запит</i>
+</p>
+<img src="/img/alert.png" />
+<p>
+    Частіше за все, повторне надсилання POST-даних не призводить до позитивних наслідків. 
+    У кращому випадку може виникнути конфлікт унікальності (наприклад, при реєстрації). 
+    У гірших випадках дані можуть замінити або додатись до вже наявних, що потребуватиме 
+    їх подальшого пошуку та видалення.
+</p>
+<p>
+    Аналогічна поведінка може виникати при русі історією запитів (кнопка "назад")
+</p>
+
+<h2>"Скидання" параметрів</h2>
+<p>
+    Сервер не може змінити параметри запиту, який зафіксував браузер для оновлення 
+    даної сторінки. Задача "прибирання" даних форми або "Скидання" параметрів реалізується 
+    інструментами редиректу:
+</p>
+<ul>
+    <li>
+        Браузер надсилає запит з формою методом POST
+    </li>
+    <li>Сервер приймає дані, зберігає та надсилає браузеру статус 30x (302 Found), у 
+        складі якого зазначається адреса переходу (редиректу)
+    </li>
+    <li>Браузер автоматично переходить на зазначений редирект, причому завжди методом 
+        GET та без параметрів форми
+    </li>
+    <li>Сервер відновлює збережені дані та видає результати. Спроба оновлення такої
+        сторінки повторить останній з запитів, тобто GET без параметрів
+    </li>
+</ul>
+<p>
+    Складність полягає у задачі збереження даних між запитами (перший та перенаправлений),
+    причому не стільки у процесі збереження, скільки у співвідесенні збрежених даних та 
+    запиту (користувача), оскільки одночасно може надходити багато різних запитів.
+    Вирішення даної задачі - сесії (сеанси)
+</p>
+<p>
+    HTTP-session - механізм утворення серверних сховищ, які співвідносяться з запитами за 
+    допомогою встановлення заголоків-Cookie, за якими вони і розпізнаються.
+</p>
+<pre>
+    Browser                      ASP (Server)
+    form --------POST[data]--------->  Session.Set(data)
+        <------- Redirect 302(/Forms)
+         --------GET /Forms-----------> Session.Get(data)
+        <----------200 [HTML]----------
+</pre>

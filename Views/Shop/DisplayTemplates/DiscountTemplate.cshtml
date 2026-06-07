@@ -1,0 +1,22 @@
+﻿@model AspKnP231.Data.Entities.Discount
+
+<div class="row border m-2 p-2">
+    <div class="col col-3">
+        @Model.Title
+    </div>
+    <div class="col col-3">
+        @Model.Description
+    </div>
+    <div class="col col-1">
+        @Model.Percent
+    </div>
+    <div class="col col-1">
+        @Model.Price
+    </div>
+    <div class="col col-2">
+        @Model.StartMoment
+    </div>
+    <div class="col col-2">
+        @(Model.FinishMoment?.ToString() ?? "На постійній основі")
+    </div>
+</div>
